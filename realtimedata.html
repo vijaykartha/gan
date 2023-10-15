@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-time Visualizations</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+<div id="plotly-div"></div>
+
+<script>
+    function fetchAndPlot() {
+        fetch('/fetch_data')
+            .then(response => response.json())
+            .then(data => {
+                // Convert the fetched data to a format suitable for Plotly
+                let x_values = data.map(d => d['date']);
+                let y_values = data.map(d => d['Quantity']);  // Just an example, adjust based on your needs
+                
+                let trace = {
+                    x: x_values,
+                    y: y_values,
+                    type: 'scatter'
+                };
+                
+                let layout = {
+                    title: 'Real-time Data Visualization',
+                };
+
+                Plotly.newPlot('plotly-div', [trace], layout);
+            });
+    }
+
+    // Fetch and plot data every 5 seconds
+    setInterval(fetchAndPlot, 5000);
+</script>
+
+</body>
+</html>
